@@ -1,2 +1,3 @@
-# Portfolio
-This is my project portfolio from CareerFoundry Data Analytics Bootcamp. Portfolio consists of business analysis of Rockbuster Stealth, an online video platform using SQL and Tableau and Instacart, A US based Grocery App Marketing and Business Analysis using Python.
+# Rockbuster Stealth Data Analysis Project using SQL
+## Project Summary
+Introduction Rockbuster Stealth LLC is a movie rental company that used to have stores around the world. 
