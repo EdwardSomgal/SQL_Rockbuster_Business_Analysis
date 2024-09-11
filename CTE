@@ -1,0 +1,60 @@
+/* This SQL query calculates the average amount spent/paid by the top 5 customers,
+based on their total payment amount. The query uses CTEs to sequentially filter and aggregate data from the database. */
+
+-- CTE to identify the top 10 countries by the number of customers
+WITH top_countries AS
+(
+	SELECT E.country
+	FROM customer B
+		INNER JOIN address C ON B.address_id = C.address_id
+		INNER JOIN city D ON C.city_id = D.city_id
+		INNER JOIN country E ON D.country_id = E.country_id
+		GROUP BY E.country_id, E.country
+		ORDER BY COUNT(E.country_id) DESC
+		LIMIT 10
+),
+-- CTE to identify the top 10 cities within the top 10 countries
+
+top_cities AS
+(
+	SELECT D.city
+	FROM customer B
+		INNER JOIN address C ON B.address_id = C.address_id
+		INNER JOIN city D ON C.city_id = D.city_id
+		INNER JOIN country E ON D.country_id = E.country_id
+		INNER JOIN top_countries F ON E.country = F.country 
+		GROUP BY D.city, E.country
+		ORDER BY COUNT(B.customer_id) DESC
+		LIMIT 10
+),
+
+-- CTE to select the top 5 paying customers within the top 10 cities
+
+customer_payments AS
+(
+	SELECT
+		B.customer_id,
+		B.first_name,
+		B.last_name,
+		E.country,
+		D.city,
+		SUM(A.amount) AS total_amount_paid
+	FROM payment A
+		INNER JOIN customer B ON A.customer_id = B.customer_id
+		INNER JOIN address C ON B.address_id = C.address_id
+		INNER JOIN city D ON C.city_id = D.city_id
+		INNER JOIN country E ON D.country_id = E.country_id
+		WHERE D.city IN
+			(SELECT city
+			 FROM top_cities)
+		GROUP BY
+		B.customer_id,
+		B.first_name,
+		B.last_name,
+		E.country,
+		D.city
+		ORDER BY total_amount_paid DESC
+		LIMIT 5
+)
+	SELECT AVG(total_amount_paid) AS average
+	FROM customer_payments;
