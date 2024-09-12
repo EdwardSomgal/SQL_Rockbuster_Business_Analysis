@@ -1,5 +1,5 @@
 SELECT 
-		MIN(customer_id) AS min_customer_id,
+		MIN(customer_id) AS min_customer_id, 
 		MAX(customer_id) AS max_customer_id,
 		AVG(customer_id) AS avg_customer_id,
 		MIN(store_id) AS min_store_id,
