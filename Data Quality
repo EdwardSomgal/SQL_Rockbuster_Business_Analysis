@@ -50,7 +50,7 @@ SELECT DISTINCT title,
 				rental_duration
 FROM film
 GROUP BY title, 
-		 release_year, 
+		 release_year,
 		 language_id, 
 		 rental_duration
 	
