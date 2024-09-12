@@ -1,0 +1,56 @@
+/* NULL Value Check of the key columns */
+
+SELECT * 
+FROM film 
+WHERE film_id IS NULL 
+  OR title IS NULL 
+  OR description IS NULL 
+  OR release_year IS NULL 
+  OR language_id IS NULL 
+  OR rental_duration IS NULL 
+  OR rental_rate IS NULL 
+  OR length IS NULL 
+  OR replacement_cost IS NULL 
+  OR rating IS NULL 
+  OR last_update IS NULL 
+  OR special_features IS NULL 
+  OR fulltext IS NULL; 
+
+/* Checking non-numerical fields don't contain placeholder values such as 'N/A', empty strings, or similar variations. */
+
+SELECT * 
+FROM film 
+WHERE title IS NULL 
+  OR title = '' 
+  OR title = ' ' 
+  OR title = 'N/A' 
+  OR title = 'n/a' 
+  OR title = 'NA' 
+  OR title = 'na';
+
+/* Finding Duplicates for film table*/
+SELECT 	title, 
+		release_year, 
+		description, 
+		language_id, 
+		rental_duration,
+		COUNT(*)
+FROM film
+GROUP BY title,
+		 release_year, 
+		 description, 
+		 language_id,
+		 rental_duration
+HAVING COUNT (*) >1;
+
+/* Extracting Unique and Uniform set of data */
+SELECT DISTINCT title,
+				release_year,
+				language_id,
+				rental_duration
+FROM film
+GROUP BY title, 
+		 release_year, 
+		 language_id, 
+		 rental_duration
+	
